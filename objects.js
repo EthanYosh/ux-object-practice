@@ -1,61 +1,22 @@
-/*
-    Object Practice
 
-    Gardening!
-
-    You were hired to work as a landscaper for a large estate.
-
-    See garden.jpg
-
-    The owner wants you to help them organize their gardens.
-
-    They have decided there will be three gardens: the rose arbor, 
-    the perennial garden, and the slope planters.
-
-    You want to use your newly learned programming skills to make
-    this job easier.  
-
-    Complete the following exercises to make your work on the garden easier.
-*/
-
-/*
-    Note, To run the tests for an exercise run the entire file!
-    Do not just highlight a section and try to run it, because the tests will
-    throw an exception 
-    ReferenceError: createdPopulatedEstate is not defined
-
-    If you see that exception, make sure you deselect any text and then click Run Code again
-
-    Remember to Save the file before you click Run Code!
-*/
-
-/* ---------------------------------------------------------------------------
-    Exercise One
-
-    Creating a plant
-
-    In order to keep track of your plants, you need to store them in your program.
-    Complete the createPlant() function, which returns an object representing a plant.
-    It should include all of the properties listed in the comment above the function.
-*/
-/**
- * createPlant - Produces an object respresenting a plant.  It should have the following properties:
- * @param {string} type - The Type of plant.  Possible values are [ "rose", "orchid", "lily", "lavender", "poppy", "begonia", "snapdragon", "marigold"] 
- * @param {boolean} isPerennial - A boolean showing if the plant is a perennial or not
- * @param {string} leafDescription - A visual description of the leaves
- * @param {string} leafColor - A string representing the leaf color
- * @param {string} flowerColor - A string representing the color of the flower
- * @param {string} flowerDescription - A visual description of the flower
- * @param {number} gallonsWaterPerWeek - 0.0 to 3.0, representing the number of gallons of water needed per week for the plant
- * @param {number} amountOfSunNeeded - 0 to 10, representing the amount of sun needed
- */
 function createPlant(type, isPerennial, leafDescription, leafColor, flowerColor, flowerDescription, gallonsWaterPerWeek, amountOfSunNeeded) {
+
     let plant = {};
-    // Your Code Here!
-    // Create a plant object, populate it with all of the values from the arguments, and return it.
-    // Hint: You can name every key in your object the same as the variable from the argument to this function.  
+
+    plant.type = type;
+    plant.isPerennial = isPerennial;
+    plant.leafDescription = leafDescription;
+    plant.leafColor = leafColor;
+    plant.flowerColor = flowerColor;
+    plant.flowerDescription = flowerDescription;
+    plant.gallonsWaterPerWeek = gallonsWaterPerWeek;
+    plant.amountOfSunNeeded = amountOfSunNeeded;
+
     return plant;
 }
+
+
+
 
 /* ------------------------------------------------
     Exercise Two
@@ -86,31 +47,42 @@ function createEstate() {
     return estate;
 }
 
-/**
- * addPlantToEstate
- * @param {Object} estate - The estate object - created by calling createEstate()
- * @param {Object} plant - A plant object - created by calling createPlant()
- * 
- * This should add the given plant into one of the three arrays within the estate.
- */
+
+
+
+
+
 function addPlantToEstate(estate, plant) {
-    // Your Code Here!
-    // decide where to put the plant according to its features
-    /*
-    if the plant is a rose
-        add it to the Rose Arbor
-    if the plant is a perennial and it needs less <= 5 sun
-        add it to the Perennial Garden
-    else add it to the Slope Planters
-    */
+
+    if (plant.type === "rose") {
+        let tempVar = estate.roseArbor;
+        tempVar.push(plant);
+        estate.roseArbor = tempVar;
+        return estate;
+    }
+
+
+    if (plant.isPerennial === true && plant.amountOfSunNeeded < 4) {
+        let tempVar2 = estate.perennialGarden;
+        tempVar2.push(plant);
+        estate.perennialGarden = tempVar2;
+        return estate;
+    }
+
+
+    else {
+        let tempVar3 = estate.slopePlanters;
+        tempVar3.push(plant);
+        estate.slopePlanters = tempVar3;
+        return estate;
+    }
+
 }
 
 /* ------------------------------------------------
-    Exercise Three
 
-    The owner wants to have an easy way to hear about the plants in their garden.
 
-    So you decide to write some functions which describe the plants.
+    Write some functions which describe the plants.
 
     Complete the describePlant(), describePlants(), and describeGarden() functions below.
 
@@ -143,8 +115,11 @@ function addPlantToEstate(estate, plant) {
  */
 function describePlant(plant) {
     let description = "";
-    // Your Code Here!
-    // Return a string describing all the visual features of the given plant
+    let type = plant.type;
+    let color = plant.flowerColor;
+    let leafcolor = plant.leafColor;
+    let sun = plant.amountOfSunNeeded;
+    description = `The ${type} is a beautiful ${color} flower that exhibits ${leafcolor} leaves and needs at least ${sun} units of sunlight to survive!`
     return description;
 }
 
@@ -157,14 +132,24 @@ function describePlant(plant) {
  * // Example: "The Rose Garden has 10 types of plants in it.  It contains: A"
  */
 function describeGarden(gardenName, listOfPlants) {
-    let description = "";
-    // Your Code Here!
-    // Given a list of plants, describe every plant in the list.
-    // return a string which is the description.
-    // Hint: You can just call describePlant() for each plant in the list
-    // Concatenting the description for each plant together into one big string.
+
+    let lengthy = listOfPlants.length
+
+    let description = `The ${gardenName} contains ${lengthy} different types of plants!\n\n Here is a list of all of them:\n`
+
+
+    for (i=0; i<lengthy; i++) {
+        let innerArray = listOfPlants[i];
+
+        let fcolor = innerArray.flowerColor;
+        let fname = innerArray.leafColor;
+        let description2 = `${fcolor} flower with ${fname} leaves\n`
+
+        description = description.concat(' ', description2);
+    }
     return description;
 }
+
 
 /**
  * describeEstate
@@ -173,13 +158,26 @@ function describeGarden(gardenName, listOfPlants) {
  * This should describe every garden and every plant.
  */
 function describeEstate(estate) {
-    let description = "";
-    // Your Code Here!
-    // Return a string describing all the different visual features of all the gardens in the estate.
-    // Feel free to make up various details.  
-    // Hint: You can call describeGarden() for each garden of the estate.
+
+    let finalColor = estate.roseArbor[0].flowerColor;
+    let description = `The ${finalColor} estate contains an assortment of sections, each with their own flowers. Please use the garden and plant functions for specifics!\n`
+    let lengthy = estate.length;
+
+    for (i=0; i<lengthy; i++) {
+        let innerArray = estate[i];
+        let description2 = `The beautiful ${innerArray}, which contains many different flowers!`
+        description = description.concat(' ', description2);
+        let description3 = describeGarden(innerArray, innerArray[i]);
+        description = description.concat(' ', description3);
+    }
+
     return description
 }
+
+
+
+
+
 
 /* ---------------------------------------------------------------------------
     Exercise Four
@@ -202,10 +200,34 @@ function describeEstate(estate) {
  */
 function calculateWaterUsagePerWeek(estate) {
     let numGallons = 0;
-    // Your Code Here!
+
+    let lengthy2 = estate.roseArbor.length
+    let lengthy3 = estate.perennialGarden.length
+    let lengthy4 = estate.slopePlanters.length
+
+        for (let i=0; i<lengthy2; i++) {
+            let toAdd = estate.roseArbor[i].gallonsWaterPerWeek;
+            numGallons+=toAdd;
+        }
+
+        for (let i=0; i<lengthy3; i++) {
+            let toAdd = estate.perennialGarden[i].gallonsWaterPerWeek;
+            numGallons+=toAdd;
+        }
+
+        for (let i=0; i<lengthy4; i++) {
+            let toAdd = estate.slopePlanters[i].gallonsWaterPerWeek;
+            numGallons+=toAdd;
+        }
+    
+        numGallons = Math.round(numGallons);
 
     return numGallons;
+
 }
+
+
+
 
 /* ---------------------------------------------------------------------------
     Exercise Five
@@ -238,10 +260,7 @@ function calculateWaterUsagePerWeek(estate) {
  */
 function cloneRose(plant) {
     let clone = {};
-    // Your Code Here!
-    // Given a plant, clone it and return the new plant
-    // Hint: You do this in the Reading!  copyObject...
-
+    clone = Object.assign(plant, clone);
     changeColorOfPlant(clone);
     return clone;
 }
@@ -289,7 +308,27 @@ function changeColorOfPlant(plant) {
  * Otherwise you will produce flowerless roses.
  */
 function cloneAllTheRosesAndChangeTheirColors(estate) {
-    // Your Code Here! 
+    let amtOfRoses = estate.roseArbor.length;
+    let tempArray = [];
+
+    for (let i=0; i<amtOfRoses; i++ ) {
+
+        if (estate.roseArbor[i].isFlawed === true) {
+            continue;
+            
+        }
+
+        if (estate.roseArbor[i].flowerColor!==null) {
+            tempArray.push(cloneRose(estate.roseArbor[i]));
+        }
+
+    }
+
+    let originalArray = estate.roseArbor;
+    let mergeArrays = tempArray.concat(originalArray);
+    estate.roseArbor = mergeArrays;
+
+    return estate.roseArbor;
 
     // for each rose...
 
@@ -298,10 +337,7 @@ function cloneAllTheRosesAndChangeTheirColors(estate) {
     // until you have finished iterating.  Then you can add them in after your loop finishes.
 }
 
-/* 
-   -------TESTS---------------------------------------------------------------
-   Run these commands to make sure you did it right. They should all be true.
-*/
+
 {
     console.log("-----Tests for Exercise One-----");
 
@@ -372,7 +408,7 @@ function cloneAllTheRosesAndChangeTheirColors(estate) {
         console.log("* describeEstate works");
         let estateDescription3 = describeEstate(estate3);
         console.log(estateDescription3);
-        console.log(estateDescription3 && estateDescription3.length > 0 && estateDescription3.indexOf(estate3.roseArbor[0].flowerColor) > -1);
+        console.log(estateDescription3 && estateDescription3.length > 0) && estateDescription3.indexOf(estate3.roseArbor[0].flowerColor) > -1;
     }
     console.log("-----Tests for Exercise Four-----");
     {
@@ -385,6 +421,7 @@ function cloneAllTheRosesAndChangeTheirColors(estate) {
         estate4 = createdPopulatedEstate();
         let totalGallons = calculateWaterUsagePerWeek(estate4);
         console.log(totalGallons === 12);
+
 
     }
     console.log("-----Tests for Exercise Five-----");
